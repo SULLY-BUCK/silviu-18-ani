@@ -270,20 +270,7 @@ section{position:relative;z-index:2;padding:6rem 2rem}
 /* ---- FIREFLIES ---- */
 .firefly{position:fixed;width:4px;height:4px;border-radius:50%;background:var(--gold);pointer-events:none;z-index:1;opacity:0}
 
-/* ---- FOOTER ---- */
-footer{position:relative;z-index:2;text-align:center;padding:3rem 2rem;border-top:1px solid rgba(201,168,76,.08)}
-footer p{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
-footer span{color:var(--gold)}
-
-@keyframes fadeUp{to{opacity:1;transform:none}}
-@keyframes pulseHeight{0%,100%{opacity:.2}50%{opacity:.7}}
-@keyframes float{0%,100%{transform:translateY(0) translateX(0)}25%{transform:translateY(-15px) translateX(8px)}75%{transform:translateY(8px) translateX(-8px)}}
-@keyframes twinkle{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
-
-/* forest silhouette */
-#forest{position:fixed;bottom:0;left:0;width:100%;z-index:1;pointer-events:none;opacity:.35}
-
-/* ---- MEMORIES / POLAROID GALLERY ---- */
+/* ---- IOANA MEMORIES / POLAROID GALLERY ---- */
 #memories-section{
   background:var(--dark);
   overflow:hidden;
@@ -386,6 +373,19 @@ footer span{color:var(--gold)}
   cursor:pointer;
   z-index:1000;
 }
+
+/* ---- FOOTER ---- */
+footer{position:relative;z-index:2;text-align:center;padding:3rem 2rem;border-top:1px solid rgba(201,168,76,.08)}
+footer p{font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+footer span{color:var(--gold)}
+
+@keyframes fadeUp{to{opacity:1;transform:none}}
+@keyframes pulseHeight{0%,100%{opacity:.2}50%{opacity:.7}}
+@keyframes float{0%,100%{transform:translateY(0) translateX(0)}25%{transform:translateY(-15px) translateX(8px)}75%{transform:translateY(8px) translateX(-8px)}}
+@keyframes twinkle{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+
+/* forest silhouette */
+#forest{position:fixed;bottom:0;left:0;width:100%;z-index:1;pointer-events:none;opacity:.35}
 
 @media(max-width:600px){
   .details-grid{grid-template-columns:1fr}
@@ -584,8 +584,9 @@ footer span{color:var(--gold)}
   </div>
 </section>
 
-<!-- ===== MEMORIES ===== -->
-<section id="memories-section">
+
+<!-- ===== IOANA MEMORIES ===== -->
+<section id="memories-section" style="display:none">
   <div class="container">
     <div class="reveal">
       <p class="section-label">Amintiri</p>
@@ -593,22 +594,22 @@ footer span{color:var(--gold)}
 
       <div class="gallery cinematic">
         <div class="polaroid">
-          <img src="poze/ioana-1.jpg" alt="Amintire cu Ioana">
-          <p>noi doi</p>
+          <img src="poze/ioana-1.jpg" alt="Poză cu Ioana">
+          <p>Noi 🤍</p>
         </div>
 
         <div class="polaroid">
-          <img src="poze/ioana-2.jpg" alt="Amintire cu Ioana">
-          <p>un moment drag</p>
+          <img src="poze/ioana-2.jpg" alt="Poză cu Ioana">
+          <p>Un moment drag</p>
         </div>
 
         <div class="polaroid">
-          <img src="poze/ioana-3.jpg" alt="Amintire cu Ioana">
-          <p>mereu special</p>
+          <img src="poze/ioana-3.jpg" alt="Poză cu Ioana">
+          <p>Mereu special</p>
         </div>
 
         <div class="polaroid">
-          <img src="poze/ioana-4.jpg" alt="Amintire cu Ioana">
+          <img src="poze/ioana-4.jpg" alt="Poză cu Ioana">
           <p>🤍</p>
         </div>
       </div>
@@ -699,9 +700,29 @@ document.getElementById('guest-name').textContent = displayName;
 document.getElementById('invitation-term').textContent = getInvitationTerm(guestGender);
 document.getElementById('note-name').textContent = displayName;
 document.getElementById('personal-note').textContent = getPersonalNote(displayName, guestGender, customNote, isFamilyMode);
+// ===== IOANA SPECIAL VERSION =====
 if (displayName.toLowerCase() === 'ioana') {
-  document.querySelector('.hero-eyebrow').textContent = 'Special pentru Ioana';
-  document.querySelector('.hero-sub').textContent = 'Unele invitații sunt mai speciale decât altele.';
+
+  document.title = 'Pentru Ioana 🤍';
+
+  document.querySelector('.hero-eyebrow').textContent = 'O invitație pentru cineva special';
+  document.querySelector('.hero-sub').textContent = 'Există oameni pe care îi inviți. Și există oameni fără de care nu ai putea să sărbătorești.';
+
+  const rsvpSection = document.getElementById('rsvp-section');
+
+  rsvpSection.innerHTML = `
+    <div class="container">
+      <div class="reveal visible">
+        <p class="section-label">🤍</p>
+        <h2 class="section-title">Pentru tine e diferit.</h2>
+        <p class="section-body">
+          Nu trebuie să confirmi nimic. Știi deja că te vreau acolo.
+        </p>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('memories-section').style.display = 'block';
 }
 
 // ---- COUNTDOWN ----
