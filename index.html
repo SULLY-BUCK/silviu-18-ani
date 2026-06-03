@@ -304,14 +304,14 @@ footer span{color:var(--gold)}
 <div id="rsvp-modal" aria-hidden="true">
   <div class="rsvp-modal-card">
     <p class="section-label">Confirmare rapidă</p>
-    <h3 id="rsvp-modal-title">Vii?</h3>
+    <h3 id="rsvp-modal-title">Te acompaniază cineva?</h3>
     <p id="rsvp-modal-copy">Spune-mi dacă vii singur sau cu altcineva, apoi trimit mesajul automat în WhatsApp.</p>
-    <label for="rsvp-companion-select">Îți acompaniază cineva?</label>
+    <label for="rsvp-companion-select">Te acompaniază cineva?</label>
     <select id="rsvp-companion-select">
       <option value="singur">Singur</option>
       <option value="cu-altcineva">Cu altcineva</option>
     </select>
-    <label for="rsvp-companion-name">Nume persoană însoțitoare (dacă ești în companie)</label>
+    <label for="rsvp-companion-name">Nume persoană însoțitoare (dacă ești acompaniat)</label>
     <input id="rsvp-companion-name" type="text" placeholder="Ex: Andrei / Maria" />
     <div class="rsvp-modal-actions">
       <button id="rsvp-modal-cancel" type="button">Anulează</button>
@@ -332,7 +332,7 @@ footer span{color:var(--gold)}
 <section id="hero">
   <p class="hero-eyebrow">O invitație personală</p>
   <h1 class="hero-name">
-    Hei <span id="guest-name">Prietene</span>,<br>ești invitat.
+    Hei <span id="guest-name">Prietene</span>,<br><span id="invitation-term">ești invitat.</span>
   </h1>
   <p class="hero-sub">O data in viata petrecem o zi de nastere ca asta.</p>
   <div class="hero-date" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;width:100%;text-align:center;">
@@ -468,8 +468,8 @@ footer span{color:var(--gold)}
   <div class="container">
     <div class="reveal">
       <p class="section-label">Confirmare</p>
-      <h2 class="section-title">Vii?</h2>
-      <p class="section-body">Spune-mi și eu mă ocup de restul.</p>
+      <h2 class="section-title">Te acompaniază cineva?</h2>
+      <p class="section-body">Spune-mi dacă vii singur sau cu altcineva și eu mă ocup de restul.</p>
       <p class="rsvp-deadline">Confirmă până pe 18 Iulie</p>
       <div class="rsvp-buttons">
         <button class="btn" onclick="rsvp('yes')">Da, vin! 🎉</button>
@@ -494,6 +494,13 @@ const guestName = (params.get('name') || '').trim();
 const displayName = isFamilyMode ? (guestName || 'Familia mea') : (guestName || 'Prietene');
 const guestGender = (params.get('gender') || '').trim().toLowerCase();
 const customNote = (params.get('message') || params.get('note') || '').trim();
+const femaleGenderValues = ['f', 'female', 'feminin', 'feminină'];
+function isFemaleGuest(gender) {
+  return femaleGenderValues.includes((gender || '').toLowerCase());
+}
+function getInvitationTerm(gender) {
+  return isFemaleGuest(gender) ? 'ești invitată.' : 'ești invitat.';
+}
 
 const notes = {
   'Ioana': 'Cea mai specială persoană din viața mea. Fără tine petrecerea asta n-ar fi completă — ești primul om pe care l-am pus pe listă și sper că știi de ce. Te iubesc. 🤍',
@@ -546,6 +553,7 @@ document.querySelector('.hero-sub').textContent = isFamilyMode
   ? 'Pentru iubita mea, pentru familia mea și pentru cei dragi care mă țin aproape.'
   : 'O data in viata petrecem o zi de nastere ca asta.';
 document.getElementById('guest-name').textContent = displayName;
+document.getElementById('invitation-term').textContent = getInvitationTerm(guestGender);
 document.getElementById('note-name').textContent = displayName;
 document.getElementById('personal-note').textContent = getPersonalNote(displayName, guestGender, customNote, isFamilyMode);
 
@@ -666,11 +674,14 @@ const musicCard = document.getElementById('music-card');
 const moodChip = document.getElementById('music-mood-chip');
 const spotifyEmbed = document.getElementById('spotify-embed');
 let currentMood = 'jamaica';
+function withAutoplay(url) {
+  return `${url}${url.includes('?') ? '&' : '?'}autoplay=1`;
+}
 function setMusicMood(mood) {
   currentMood = mood;
   document.querySelectorAll('.mood-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.mood === mood));
   const theme = moodThemes[mood] || moodThemes.jamaica;
-  const url = songUrls[mood] || songUrls.trap;
+  const url = withAutoplay(songUrls[mood] || songUrls.trap);
   musicShell.style.background = `linear-gradient(135deg, rgba(11,18,25,.96), rgba(7,12,17,.92)), radial-gradient(circle at top, ${theme.accent}, transparent 30%)`;
   musicShell.style.boxShadow = `0 24px 50px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.04), 0 0 40px ${theme.accent}`;
   musicCard.style.boxShadow = theme.shadow;
