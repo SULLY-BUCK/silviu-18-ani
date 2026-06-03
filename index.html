@@ -159,7 +159,7 @@ section{position:relative;z-index:2;padding:6rem 2rem}
 #music-section{overflow:hidden}
 #music-section .spotify-wrap{margin-top:2rem;max-width:640px}
 #music-section .music-shell{
-  position:relative; overflow:hidden; border-radius:24px;
+  position:relative; overflow:visible; border-radius:24px;
   padding:1.25rem; border:1px solid rgba(201,168,76,.22);
   background:
     linear-gradient(135deg, rgba(11,18,25,.96), rgba(7,12,17,.92)),
@@ -176,10 +176,11 @@ section{position:relative;z-index:2;padding:6rem 2rem}
 #music-section .music-topbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
 #music-section .music-chip{display:inline-flex;align-items:center;gap:.45rem;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold2);background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.22);padding:.45rem .65rem;border-radius:999px}
 #music-section .music-chip strong{color:#fff;font-weight:500}
-#music-section .mood-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem}
+#music-section .mood-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem;position:relative;z-index:3}
 #music-section .mood-btn{
   border:1px solid rgba(201,168,76,.28); background:rgba(8,13,18,.75); color:var(--text); border-radius:999px; padding:.55rem .9rem;
   font-size:.78rem; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; transition:all .25s;
+  position:relative; z-index:3; touch-action:manipulation;
 }
 #music-section .mood-btn:hover, #music-section .mood-btn.active{background:rgba(201,168,76,.14); color:#fff; border-color:rgba(240,208,128,.55); box-shadow:0 12px 24px rgba(201,168,76,.15)}
 #music-section .music-spectra{display:flex;align-items:flex-end;gap:.35rem;height:52px;margin:0 0 .9rem}
@@ -333,7 +334,7 @@ footer span{color:var(--gold)}
   <h1 class="hero-name">
     Hei <span id="guest-name">Prietene</span>,<br>ești invitat.
   </h1>
-  <p class="hero-sub">La 18 ani nu te poți preface că n-ai primit asta.</p>
+  <p class="hero-sub">O data in viata petrecem o zi de nastere ca asta.</p>
   <div class="hero-date" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;width:100%;text-align:center;">
     <div style="display:flex;align-items:center;justify-content:center;gap:1rem;width:100%;">
       <div class="hero-date-block"><div class="num">24</div></div>
@@ -543,7 +544,7 @@ document.title = `18 ani — ${displayName}`;
 document.querySelector('.hero-eyebrow').textContent = isFamilyMode ? 'Invitație specială pentru familie' : 'O invitație personală';
 document.querySelector('.hero-sub').textContent = isFamilyMode
   ? 'Pentru iubita mea, pentru familia mea și pentru cei dragi care mă țin aproape.'
-  : 'La 18 ani nu te poți preface că n-ai primit asta.';
+  : 'O data in viata petrecem o zi de nastere ca asta.';
 document.getElementById('guest-name').textContent = displayName;
 document.getElementById('note-name').textContent = displayName;
 document.getElementById('personal-note').textContent = getPersonalNote(displayName, guestGender, customNote, isFamilyMode);
