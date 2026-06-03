@@ -954,15 +954,35 @@ function closeRsvpModal() {
 function sendRsvpMessage(type) {
   const name = guestName || 'Oaspe';
   const phone = '0725744883';
-  const withPerson = companionSelect.value === 'cu-altcineva' ? (companionName.value.trim() || 'o altă persoană') : 'singur';
+
+  const withPerson =
+    companionSelect.value === 'cu-altcineva'
+      ? (companionName.value.trim() || 'o altă persoană')
+      : 'singur';
+
   const base = type === 'yes'
     ? `Salut Silviu! Eu, ${name}, confirm că vin la petrecerea ta pe 24 și 25 iulie! 🎉`
     : type === 'maybe'
       ? `Salut Silviu! Eu, ${name}, încă nu știu sigur dacă pot veni pe 24 și 25 iulie. Îți dau de știre!`
       : `Salut Silviu, sunt ${name}. Din păcate nu pot veni pe 24 și 25 iulie. La mulți ani! 🎂`;
-  const extra = withPerson === 'singur' ? 'Voi veni singur.' : `Voi veni împreună cu ${withPerson}.`;
-  const msg = encodeURIComponent(`${base}\n${extra}`);
-  window.open(`https://wa.me/40${phone.substring(1)}?text=${msg}`, '_blank', 'noopener,noreferrer');
+
+  let msgText = base;
+
+  if (type !== 'no') {
+    const extra = withPerson === 'singur'
+      ? 'Voi veni singur.'
+      : `Voi veni împreună cu ${withPerson}.`;
+
+    msgText += `\n${extra}`;
+  }
+
+  const msg = encodeURIComponent(msgText);
+
+  window.open(
+    `https://wa.me/40${phone.substring(1)}?text=${msg}`,
+    '_blank',
+    'noopener,noreferrer'
+  );
 }
 
 function rsvp(type) {
