@@ -283,6 +283,110 @@ footer span{color:var(--gold)}
 /* forest silhouette */
 #forest{position:fixed;bottom:0;left:0;width:100%;z-index:1;pointer-events:none;opacity:.35}
 
+/* ---- MEMORIES / POLAROID GALLERY ---- */
+#memories-section{
+  background:var(--dark);
+  overflow:hidden;
+}
+
+.gallery.cinematic{
+  margin-top:3rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:2rem;
+  perspective:1200px;
+}
+
+.polaroid{
+  background:#f7f1e3;
+  padding:10px 10px 28px;
+  box-shadow:0 18px 40px rgba(0,0,0,.35);
+  cursor:pointer;
+  position:relative;
+  transition:all .45s ease;
+  transform:rotate(calc(var(--r,0) * 1deg));
+  animation:floatPhoto 6s ease-in-out infinite;
+}
+
+.polaroid:nth-child(1){--r:-4;animation-delay:0s}
+.polaroid:nth-child(2){--r:3;animation-delay:.5s}
+.polaroid:nth-child(3){--r:-2;animation-delay:1s}
+.polaroid:nth-child(4){--r:4;animation-delay:1.5s}
+
+.polaroid img{
+  width:100%;
+  height:190px;
+  object-fit:cover;
+  display:block;
+  filter:sepia(.45) contrast(1.08) brightness(.92);
+}
+
+.polaroid p{
+  margin-top:10px;
+  text-align:center;
+  color:#3b3328;
+  font-family:"Courier New", monospace;
+  font-size:.85rem;
+}
+
+.polaroid:hover{
+  transform:rotate(0deg) scale(1.08);
+  z-index:10;
+  box-shadow:0 28px 60px rgba(0,0,0,.5);
+}
+
+.polaroid:hover img{
+  filter:sepia(.15) contrast(1.2) brightness(1.05);
+}
+
+@keyframes floatPhoto{
+  0%,100%{translate:0 0}
+  50%{translate:0 -12px}
+}
+
+/* ---- PHOTO POPUP ---- */
+#photo-popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.86);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .35s ease;
+  backdrop-filter:blur(7px);
+}
+
+#photo-popup.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+#photo-popup img{
+  max-width:90%;
+  max-height:82%;
+  transform:scale(.8);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+  filter:sepia(.25) contrast(1.1);
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+}
+
+#photo-popup.show img{
+  transform:scale(1);
+}
+
+#close-popup{
+  position:absolute;
+  top:24px;
+  right:36px;
+  color:#fff;
+  font-size:2.5rem;
+  cursor:pointer;
+  z-index:1000;
+}
+
 @media(max-width:600px){
   .details-grid{grid-template-columns:1fr}
   #big-popup{padding:2rem;width:90%}
@@ -480,6 +584,43 @@ footer span{color:var(--gold)}
   </div>
 </section>
 
+<!-- ===== MEMORIES ===== -->
+<section id="memories-section">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-label">Amintiri</p>
+      <h2 class="section-title">Noi doi, în câteva cadre</h2>
+
+      <div class="gallery cinematic">
+        <div class="polaroid">
+          <img src="poze/ioana-1.jpg" alt="Amintire cu Ioana">
+          <p>noi doi</p>
+        </div>
+
+        <div class="polaroid">
+          <img src="poze/ioana-2.jpg" alt="Amintire cu Ioana">
+          <p>un moment drag</p>
+        </div>
+
+        <div class="polaroid">
+          <img src="poze/ioana-3.jpg" alt="Amintire cu Ioana">
+          <p>mereu special</p>
+        </div>
+
+        <div class="polaroid">
+          <img src="poze/ioana-4.jpg" alt="Amintire cu Ioana">
+          <p>🤍</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="photo-popup">
+  <span id="close-popup">×</span>
+  <img id="popup-img" src="" alt="">
+</div>
+
 <!-- ===== FOOTER ===== -->
 <footer>
   <p>Cu drag, <span>Ursache Silviu</span> · 18 ani · Iulie 2026</p>
@@ -547,7 +688,9 @@ function getPersonalNote(name, gender, override, familyMode = false) {
   return 'Prezența ta la această petrecere înseamnă enorm pentru mine. Te aștept să petrecem împreună un weekend de neuitat în mijlocul naturii.';
 }
 
-document.title = `18 ani — ${displayName}`;
+document.title = displayName.toLowerCase() === 'ioana'
+  ? 'Special pentru Ioana 🤍'
+  : `18 ani — ${displayName}`;
 document.querySelector('.hero-eyebrow').textContent = isFamilyMode ? 'Invitație specială pentru familie' : 'O invitație personală';
 document.querySelector('.hero-sub').textContent = isFamilyMode
   ? 'Pentru iubita mea, pentru familia mea și pentru cei dragi care mă țin aproape.'
@@ -556,6 +699,10 @@ document.getElementById('guest-name').textContent = displayName;
 document.getElementById('invitation-term').textContent = getInvitationTerm(guestGender);
 document.getElementById('note-name').textContent = displayName;
 document.getElementById('personal-note').textContent = getPersonalNote(displayName, guestGender, customNote, isFamilyMode);
+if (displayName.toLowerCase() === 'ioana') {
+  document.querySelector('.hero-eyebrow').textContent = 'Special pentru Ioana';
+  document.querySelector('.hero-sub').textContent = 'Unele invitații sunt mai speciale decât altele.';
+}
 
 // ---- COUNTDOWN ----
 function updateCountdown() {
@@ -901,6 +1048,30 @@ window.addEventListener('scroll', () => {
   const y = window.scrollY;
   hero.style.transform = `translateY(${y * .3}px)`;
 });
+
+// ---- POLAROID PHOTO POPUP ----
+const galleryImages = document.querySelectorAll('.polaroid img');
+const photoPopup = document.getElementById('photo-popup');
+const popupImg = document.getElementById('popup-img');
+const closePhotoPopup = document.getElementById('close-popup');
+
+galleryImages.forEach(img => {
+  img.addEventListener('click', () => {
+    photoPopup.classList.add('show');
+    popupImg.src = img.src;
+  });
+});
+
+closePhotoPopup.addEventListener('click', () => {
+  photoPopup.classList.remove('show');
+});
+
+photoPopup.addEventListener('click', (e) => {
+  if(e.target === photoPopup){
+    photoPopup.classList.remove('show');
+  }
+});
+
 </script>
 </body>
 </html>
