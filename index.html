@@ -803,10 +803,15 @@ function getPersonalNote(name, gender, override, familyMode = false) {
 document.title = displayName.toLowerCase() === 'ioana'
   ? 'Special pentru Ioana 🤍'
   : `18 ani — ${displayName}`;
-document.querySelector('.hero-eyebrow').textContent = isFamilyMode ? 'Invitație specială pentru familie' : 'O invitație personală';
+
+document.querySelector('.hero-eyebrow').textContent = isFamilyMode 
+  ? 'Invitație specială pentru familie' 
+  : 'O invitație personală';
+
 document.querySelector('.hero-sub').textContent = isFamilyMode
-  ? 'Pentru iubita mea, pentru familia mea și pentru cei dragi care mă țin aproape.'
+  ? 'Pentru oamenii care m-au văzut crescând și care au contribuit, fiecare în felul său, la omul care sunt astăzi.'
   : 'O data in viata petrecem o zi de nastere ca asta.';
+
 document.getElementById('guest-name').textContent = displayName;
 document.getElementById('invitation-term').textContent = getInvitationTerm(guestGender);
 document.getElementById('note-name').textContent = displayName;
@@ -1086,16 +1091,22 @@ function sendRsvpMessage(type) {
   const name = guestName || 'Oaspe';
   const phone = '0725744883';
 
+const eventPeriod = displayName.toLowerCase() === 'ioana'
+  ? '24, 25 și 26 iulie'
+  : isFamilyMode
+    ? '25 și 26 iulie'
+    : '24 și 25 iulie';
+
   const withPerson =
     companionSelect.value === 'cu-altcineva'
       ? (companionName.value.trim() || 'o altă persoană')
       : 'singur';
 
   const base = type === 'yes'
-    ? `Salut Silviu! Eu, ${name}, confirm că vin la petrecerea ta pe 24 și 25 iulie! 🎉`
+     ? `Salut Silviu! Eu, ${name}, confirm că vin la petrecerea ta pe ${eventPeriod}! 🎉`
     : type === 'maybe'
-      ? `Salut Silviu! Eu, ${name}, încă nu știu sigur dacă pot veni pe 24 și 25 iulie. Îți dau de știre!`
-      : `Salut Silviu, sunt ${name}. Din păcate nu pot veni pe 24 și 25 iulie. La mulți ani! 🎂`;
+    ? `Salut Silviu! Eu, ${name}, încă nu știu sigur dacă pot veni pe ${eventPeriod}. Îți dau de știre!`
+    : `Salut Silviu, sunt ${name}. Din păcate nu pot veni pe ${eventPeriod}. La mulți ani! 🎂`;
 
   let msgText = base;
 
