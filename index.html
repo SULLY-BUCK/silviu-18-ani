@@ -155,6 +155,70 @@ section{position:relative;z-index:2;padding:6rem 2rem}
 }
 #map-section .map-wrap iframe{width:100%;height:100%;border:none;filter:grayscale(30%) brightness(0.85)}
 
+/* ---- LOCATION CARD ---- */
+.location-card{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1rem;
+  margin-top:2rem;
+  margin-bottom:2rem;
+}
+
+.location-item{
+  border:1px solid rgba(201,168,76,.18);
+  background:linear-gradient(135deg, rgba(17,29,38,.9), rgba(7,12,17,.85));
+  padding:1.2rem;
+  border-radius:18px;
+  display:flex;
+  gap:1rem;
+  align-items:flex-start;
+  box-shadow:0 18px 35px rgba(0,0,0,.25);
+  transition:all .35s ease;
+}
+
+.location-item:hover{
+  transform:translateY(-6px);
+  border-color:rgba(240,208,128,.45);
+  box-shadow:0 24px 50px rgba(201,168,76,.12);
+}
+
+.location-item span{
+  font-size:1.5rem;
+}
+
+.location-item p{
+  color:var(--text);
+  line-height:1.6;
+  font-size:.95rem;
+}
+
+.location-buttons{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  margin-top:1.2rem;
+}
+
+.cabin-site-btn{
+  position:relative;
+  overflow:hidden;
+}
+
+.cabin-site-btn::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+  transition:left .6s ease;
+}
+
+.cabin-site-btn:hover::before{
+  left:100%;
+}
+
 /* ---- MUSIC ---- */
 #music-section{overflow:hidden}
 #music-section .spotify-wrap{margin-top:2rem;max-width:640px}
@@ -435,18 +499,34 @@ footer span{color:var(--gold)}
 <!-- ===== HERO ===== -->
 <section id="hero">
   <p class="hero-eyebrow">O invitație personală</p>
+
   <h1 class="hero-name">
-    Hei <span id="guest-name">Prietene</span>,<br><span id="invitation-term">ești invitat.</span>
+    Hei <span id="guest-name">Prietene</span>,<br>
+    <span id="invitation-term">ești invitat.</span>
   </h1>
+
   <p class="hero-sub">O data in viata petrecem o zi de nastere ca asta.</p>
+
   <div class="hero-date" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;width:100%;text-align:center;">
     <div style="display:flex;align-items:center;justify-content:center;gap:1rem;width:100%;">
-      <div class="hero-date-block"><div class="num">24</div></div>
+
+      <div class="hero-date-block">
+        <div class="num" id="hero-start-day">24</div>
+      </div>
+
       <div class="date-sep"></div>
-      <div class="hero-date-block"><div class="num">25</div></div>
+
+      <div class="hero-date-block">
+        <div class="num" id="hero-end-day">25</div>
+      </div>
+
     </div>
-    <div class="hero-date-block" style="display:flex;justify-content:center;align-items:center;width:100%;"><div class="lbl" style="letter-spacing:.25em;">Iulie</div></div>
+
+    <div class="hero-date-block" style="display:flex;justify-content:center;align-items:center;width:100%;">
+      <div class="lbl" style="letter-spacing:.25em;">Iulie</div>
+    </div>
   </div>
+
   <div class="scroll-hint">Derulează mai jos</div>
 </section>
 
@@ -486,47 +566,78 @@ footer span{color:var(--gold)}
       <p class="section-label">Detalii</p>
       <h2 class="section-title">Ce trebuie să știi</h2>
       <div class="divider"></div>
+
       <div class="details-grid">
         <div class="detail-item">
-          <div class="d-label">Când</div>
-          <div class="d-value">24 – 25 Iulie 2026</div>
+          <div class="d-label">📅 Când</div>
+          <div class="d-value" id="details-date">24 – 25 Iulie 2026</div>
         </div>
+c
         <div class="detail-item">
-          <div class="d-label">Unde</div>
-          <div class="d-value">Cabana din Figa,<br>Bistrița-Năsăud</div>
+          <div class="d-label">🌲 Unde</div>
+          <div class="d-value">Cabana Piatra Fântânele<br>Pasul Tihuța</div>
         </div>
+
         <div class="detail-item">
-          <div class="d-label">Ce să aduci</div>
-          <div class="d-value">Vibe-uri bune & costum de baie 🩱</div>
+          <div class="d-label">🎒 Nu uita</div>
+          <div class="d-value">Haine comode & chef de distracție</div>
         </div>
+
         <div class="detail-item">
-          <div class="d-label">Răspunde până pe</div>
-          <div class="d-value">18 Iulie 2026<br><span style="font-size:.85rem;color:var(--muted)"></span></div>
+          <div class="d-label">📩 Răspunde până pe</div>
+          <div class="d-value">
+            18 Iulie 2026<br>
+            <span style="font-size:.85rem;color:var(--muted)">
+              pentru a putea organiza totul cât mai bine
+            </span>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== MAP ===== -->
+ <!-- ===== MAP ===== -->
 <section id="map-section">
   <div class="container">
     <div class="reveal">
       <p class="section-label">Locație</p>
-      <h2 class="section-title">Găsești cabana aici</h2>
-      <p class="section-body" style="margin-bottom:0">Satul Figa, în inima Transilvaniei. Natură, pădure, libertate.</p>
+      <h2 class="section-title">Cabana Piatra Fântânele</h2>
+
+      <p class="section-body">
+        Ne vedem la Cabana Piatra Fântânele, unde vom sărbători împreună cei 18 ani.
+        Petrecerea începe vineri după-amiază și promite multă voie bună.
+      </p>
+
+      <div class="location-card">
+        <div class="location-item">
+          <span>📍</span>
+          <p>str. Principală, nr. 1025<br>sat Piatra Fântânele, Tiha Bârgăului</p>
+        </div>
+
+        <div class="location-item">
+          <span>🌲</span>
+          <p>Cabana are terasă, grill, zonă de relaxare, jacuzzi, saună și lac propriu.</p>
+        </div>
+      </div>
+
       <div class="map-wrap">
         <iframe
-          src="https://maps.google.com/maps?q=47.14217,24.20886&z=14&output=embed"
+          src="https://maps.google.com/maps?q=47.24403350629882,25.003809807544133&z=15&output=embed"
           allowfullscreen
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"
-          title="Locația cabanei">
+          title="Cabana Piatra Fântânele">
         </iframe>
       </div>
-      <div style="margin-top:1rem">
-        <a class="btn secondary" href="https://maps.google.com/?q=47.14217,24.20886" target="_blank" style="cursor:pointer;font-size:.75rem">
+
+      <div class="location-buttons">
+        <a class="btn" href="https://maps.google.com/?q=47.24403350629882,25.003809807544133" target="_blank">
           Deschide în Google Maps ↗
+        </a>
+
+        <a class="btn secondary cabin-site-btn" href="https://www.cabanapiatrafantanele.ro/" target="_blank">
+          Vezi site-ul cabanei 🌲
         </a>
       </div>
     </div>
@@ -700,6 +811,26 @@ document.getElementById('guest-name').textContent = displayName;
 document.getElementById('invitation-term').textContent = getInvitationTerm(guestGender);
 document.getElementById('note-name').textContent = displayName;
 document.getElementById('personal-note').textContent = getPersonalNote(displayName, guestGender, customNote, isFamilyMode);
+
+// ===== EVENT DATE BY GUEST TYPE =====
+const detailsDate = document.getElementById('details-date');
+const heroStartDay = document.getElementById('hero-start-day');
+const heroEndDay = document.getElementById('hero-end-day');
+
+if (displayName.toLowerCase() === 'ioana') {
+  detailsDate.textContent = '24 – 26 Iulie 2026';
+  heroStartDay.textContent = '24';
+  heroEndDay.textContent = '26';
+} else if (isFamilyMode) {
+  detailsDate.textContent = '25 – 26 Iulie 2026';
+  heroStartDay.textContent = '25';
+  heroEndDay.textContent = '26';
+} else {
+  detailsDate.textContent = '24 – 25 Iulie 2026';
+  heroStartDay.textContent = '24';
+  heroEndDay.textContent = '25';
+}
+
 // ===== IOANA SPECIAL VERSION =====
 if (displayName.toLowerCase() === 'ioana') {
 
